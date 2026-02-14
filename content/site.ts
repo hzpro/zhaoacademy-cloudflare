@@ -3,10 +3,10 @@ export const siteConfig = {
   nameEn: "ZhaoAcademy",
   url: "https://zhaoacademy.org",
   email: "info@zhaoacademy.org",
-  phone: "+1 (555) 000-0000",
+  phone: "",
   address: "美国",
   social: {
-    wechat: "ZhaoAcademy",
+    wechat: "",
   },
   copyright: `© ${new Date().getFullYear()} 硅谷赵老师 ZhaoAcademy. All rights reserved.`,
 };

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.zhaoacademy.org)",
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(git status:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh repo list:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(git -C /home/zouhao/aperio_site/zhaoacademy-site diff --stat)",
+      "Bash(git -C /home/zouhao/aperio_site/zhaoacademy-site add public/images/logo.jpg public/images/teacher-zhao.webp components/layout/header.tsx components/layout/footer.tsx components/about/founder-profile.tsx components/home/about-preview.tsx)",
+      "Bash(git -C:*)"
+    ]
+  }
+}
