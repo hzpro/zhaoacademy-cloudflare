@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { MDXRemote } from "next-mdx-remote/rsc";
 import { Container } from "@/components/ui/container";
-import { articles, getArticle, formatDate } from "@/content/articles";
-import { WhyEffortContent } from "@/components/articles/why-effort-content";
+import { getArticle, getArticleSlugs, formatDate } from "@/lib/articles";
 
 export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+  return getArticleSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -16,17 +16,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticle(slug);
-  if (!article) return {};
-  return {
-    title: article.title,
-    description: article.excerpt,
-  };
-}
-
-function ArticleContent({ slug }: { slug: string }) {
-  if (slug === "why-effort") return <WhyEffortContent />;
-  return null;
+  try {
+    const article = getArticle(slug);
+    return {
+      title: article.frontmatter.title,
+      description: article.frontmatter.excerpt,
+    };
+  } catch {
+    return {};
+  }
 }
 
 export default async function ArticlePage({
@@ -35,8 +33,15 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = getArticle(slug);
-  if (!article) notFound();
+
+  let article;
+  try {
+    article = getArticle(slug);
+  } catch {
+    notFound();
+  }
+
+  const { frontmatter, content } = article;
 
   return (
     <>
@@ -52,19 +57,19 @@ export default async function ArticlePage({
           </Link>
           <div className="max-w-3xl">
             <p className="text-gold-light text-sm font-medium mb-3">
-              {formatDate(article.date)}
+              {formatDate(frontmatter.date)}
             </p>
             <h1 className="font-serif text-3xl font-bold text-white sm:text-4xl leading-tight">
-              {article.title}
+              {frontmatter.title}
             </h1>
             <p className="mt-3 text-xl text-white/70 font-serif">
-              {article.subtitle}
+              {frontmatter.subtitle}
             </p>
             <div className="mt-6 flex items-center gap-4">
               <span className="text-white/50 text-sm">硅谷赵老师</span>
-              {article.substackUrl && (
+              {frontmatter.substackUrl && (
                 <a
-                  href={article.substackUrl}
+                  href={frontmatter.substackUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-gold-light hover:text-gold text-sm transition-colors"
@@ -82,7 +87,9 @@ export default async function ArticlePage({
       <section className="py-16 bg-bg">
         <Container>
           <div className="mx-auto max-w-3xl">
-            <ArticleContent slug={slug} />
+            <div className="article-body">
+              <MDXRemote source={content} />
+            </div>
 
             {/* Footer */}
             <div className="mt-16 pt-8 border-t border-border">
@@ -93,9 +100,9 @@ export default async function ArticlePage({
                     ZhaoAcademy.org
                   </p>
                 </div>
-                {article.substackUrl && (
+                {frontmatter.substackUrl && (
                   <a
-                    href={article.substackUrl}
+                    href={frontmatter.substackUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-light transition-colors"

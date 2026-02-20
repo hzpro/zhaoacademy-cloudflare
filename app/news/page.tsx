@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { articles, formatDate } from "@/content/articles";
+import { getAllArticles, formatDate } from "@/lib/articles";
 
 export const metadata: Metadata = {
   title: "教育资讯",
@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function NewsPage() {
+  const articles = getAllArticles();
+
   return (
     <>
       <section className="bg-primary-dark pt-32 pb-16">
@@ -34,10 +36,13 @@ export default function NewsPage() {
                   key={article.slug}
                   className="group grid sm:grid-cols-[280px_1fr] gap-6 sm:gap-8 items-start"
                 >
-                  <Link href={`/news/${article.slug}`} className="block overflow-hidden rounded-xl aspect-[4/3]">
+                  <Link
+                    href={`/news/${article.slug}`}
+                    className="block overflow-hidden rounded-xl aspect-[4/3]"
+                  >
                     <Image
-                      src={article.coverImage}
-                      alt={article.title}
+                      src={article.frontmatter.coverImage}
+                      alt={article.frontmatter.title}
                       width={560}
                       height={420}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -45,18 +50,18 @@ export default function NewsPage() {
                   </Link>
                   <div className="flex flex-col">
                     <p className="text-sm font-medium text-gold">
-                      {formatDate(article.date)}
+                      {formatDate(article.frontmatter.date)}
                     </p>
                     <Link href={`/news/${article.slug}`}>
                       <h2 className="mt-2 font-serif text-2xl font-bold text-text leading-snug hover:text-primary transition-colors">
-                        {article.title}
+                        {article.frontmatter.title}
                       </h2>
                     </Link>
                     <p className="mt-1 text-text-light font-serif text-base">
-                      {article.subtitle}
+                      {article.frontmatter.subtitle}
                     </p>
                     <p className="mt-3 text-text-light leading-relaxed text-sm line-clamp-3">
-                      {article.excerpt}
+                      {article.frontmatter.excerpt}
                     </p>
                     <Link
                       href={`/news/${article.slug}`}

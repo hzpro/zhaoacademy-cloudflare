@@ -17,7 +17,10 @@
       "Bash(git push:*)",
       "Bash(git -C /home/zouhao/aperio_site/zhaoacademy-site diff --stat)",
       "Bash(git -C /home/zouhao/aperio_site/zhaoacademy-site add public/images/logo.jpg public/images/teacher-zhao.webp components/layout/header.tsx components/layout/footer.tsx components/about/founder-profile.tsx components/home/about-preview.tsx)",
-      "Bash(git -C:*)"
+      "Bash(git -C:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(npx next build:*)"
     ]
   }
 }

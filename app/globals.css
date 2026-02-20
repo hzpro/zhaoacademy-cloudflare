@@ -100,7 +100,7 @@ body {
   color: var(--color-text);
 }
 
-.article-image {
+.article-body img {
   display: block;
   width: 100%;
   max-width: 640px;
